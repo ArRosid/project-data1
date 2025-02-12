@@ -1,12 +1,12 @@
 import boto3
-import json
+import csv
 import time
 import random
 from decimal import Decimal
 
 # Konfigurasi
 S3_BUCKET_NAME = "your-s3-bucket-name"  # Ganti dengan nama bucket S3 Anda
-S3_FILE_NAME = "events.json"
+S3_FILE_NAME = "events.csv"
 
 # Inisialisasi klien S3
 s3_client = boto3.client("s3")
@@ -23,13 +23,16 @@ def generate_event():
 # Membuat 100 data event
 events = [generate_event() for _ in range(100)]
 
-# Simpan ke file JSON
-with open("events.json", "w") as f:
-    json.dump(events, f, indent=2)
+# Simpan ke file CSV
+csv_headers = ["device_id", "event_type", "value", "timestamp"]
+with open("events.csv", "w", newline="") as f:
+    writer = csv.DictWriter(f, fieldnames=csv_headers)
+    writer.writeheader()
+    writer.writerows(events)
 
 # Unggah ke S3
 try:
-    s3_client.upload_file("events.json", S3_BUCKET_NAME, S3_FILE_NAME)
+    s3_client.upload_file("events.csv", S3_BUCKET_NAME, S3_FILE_NAME)
     print(f"✅ File {S3_FILE_NAME} berhasil diunggah ke S3 bucket {S3_BUCKET_NAME}")
 except Exception as e:
     print(f"❌ Gagal mengunggah ke S3: {e}")
