@@ -5,7 +5,7 @@ import random
 from decimal import Decimal
 
 # Konfigurasi
-S3_BUCKET_NAME = "your-s3-bucket-name"  # Ganti dengan nama bucket S3 Anda
+S3_BUCKET_NAME = "project-bucket-source-rosid"  # Ganti dengan nama bucket S3 Anda
 S3_FILE_NAME = "events.csv"
 
 # Inisialisasi klien S3
